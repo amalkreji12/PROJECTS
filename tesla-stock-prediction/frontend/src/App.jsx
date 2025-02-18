@@ -1,10 +1,13 @@
 import "./App.css";
-import TopBar from "./components/TopBar";
+import Form from "./components/FormSection/Form";
+import TopBar from "./components/TopBar/TopBar";
 
 function App() {
   return (
     <div>
       <TopBar/>
+
+      <Form/>
     </div>
   );
 }
