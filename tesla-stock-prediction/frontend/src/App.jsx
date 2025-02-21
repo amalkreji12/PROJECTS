@@ -5,9 +5,8 @@ import TopBar from "./components/TopBar/TopBar";
 function App() {
   return (
     <div>
-      <TopBar/>
-
-      <Form/>
+      <TopBar />
+      <Form />
     </div>
   );
 }
