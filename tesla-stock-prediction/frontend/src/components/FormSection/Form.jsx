@@ -9,6 +9,7 @@ const Form = () => {
   });
 
   const [predictedPrice, setPredictedPrice] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,6 +18,7 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(formData);
+    setIsLoading(true);
 
     const { openPrice, highPrice, lowPrice, volumePrice } = formData;
 
@@ -27,8 +29,9 @@ const Form = () => {
     });
 
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
     setPredictedPrice(data.predicted_closePrice);
+    setIsLoading(false);
   };
 
   return (

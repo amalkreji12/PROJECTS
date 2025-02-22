@@ -14,10 +14,13 @@ app.get('/home', (req, res) => {
 });
 
 app.post('/predict', (req, res) => {
-    const { openPrice, closePrice, lowPrice, volumePrice } = req.body;
-    console.log(req.body);
+    const { openPrice, highPrice, lowPrice, volumePrice } = req.body;
+    console.log("Received Data:", req.body);
+    if (openPrice === undefined || highPrice === undefined || lowPrice === undefined || volumePrice === undefined) {
+        return res.status(400).json({ error: "Invalid input data" });
+    }
 
-    exec(`python predict.py ${openPrice} ${closePrice} ${lowPrice} ${volumePrice}`, (error, stdout, stderr) => {
+    exec(`python predict.py ${openPrice} ${highPrice} ${lowPrice} ${volumePrice}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error:${error.message}`);
             return res.status(500).json({ error: 'prediction failed' });
