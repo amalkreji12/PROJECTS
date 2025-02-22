@@ -8,13 +8,27 @@ const Form = () => {
     volumePrice: "",
   });
 
+  const [predictedPrice, setPredictedPrice] = useState(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+
+    const { openPrice, highPrice, lowPrice, volumePrice } = formData;
+
+    const response = await fetch("http://localhost:3000/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ openPrice, highPrice, lowPrice, volumePrice }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    setPredictedPrice(data.predicted_closePrice);
   };
 
   return (
@@ -59,14 +73,14 @@ const Form = () => {
 
           <button
             onClick={handleSubmit}
-            type="button"
+            type="submit"
             className="bg-blue-500 text-white p-2 rounded-lg font-semibold hover:bg-blue-600 mt-2 cursor-pointer"
           >
             Predict closing price
           </button>
 
           <h2 className="mt-4 text-lg font-bold text-center">
-            Predicted Closing Price
+            Predicted Closing Price : {predictedPrice}
           </h2>
         </form>
       </div>
