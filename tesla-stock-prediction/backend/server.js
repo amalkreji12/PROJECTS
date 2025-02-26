@@ -15,7 +15,7 @@ app.get('/home', (req, res) => {
 
 app.post('/predict', (req, res) => {
     const { openPrice, highPrice, lowPrice, volumePrice } = req.body;
-    console.log("Received Data:", req.body);
+    //console.log("Received Data:", req.body);
     if (openPrice === undefined || highPrice === undefined || lowPrice === undefined || volumePrice === undefined) {
         return res.status(400).json({ error: "Invalid input data" });
     }

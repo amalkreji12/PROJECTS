@@ -7,9 +7,9 @@ const Form = () => {
     lowPrice: "",
     volumePrice: "",
   });
-
   const [predictedPrice, setPredictedPrice] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,75 +17,142 @@ const Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData);
-    setIsLoading(true);
+    setError("");
+    setIsSubmitting(true);
 
-    const { openPrice, highPrice, lowPrice, volumePrice } = formData;
+    try {
+      const { openPrice, highPrice, lowPrice, volumePrice } = formData;
+      const response = await fetch("http://localhost:3000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ openPrice, highPrice, lowPrice, volumePrice }),
+      });
 
-    const response = await fetch("http://localhost:3000/predict", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ openPrice, highPrice, lowPrice, volumePrice }),
-    });
+      if (!response.ok) throw new Error("Prediction failed");
 
-    const data = await response.json();
-    //console.log(data);
-    setPredictedPrice(data.predicted_closePrice);
-    setIsLoading(false);
+      const data = await response.json();
+      setPredictedPrice(data.predicted_closePrice);
+    } catch (err) {
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-100">
-        <form className="flex flex-col space-y-3">
-          <label className="font-semibold">Open Price :</label>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6">
+        <h1 className="text-2xl font-bold text-center text-gray-900">
+          Stock Price Predictor
+        </h1>
+        <p className="text-center text-sm text-gray-600 mb-6">
+          Enter market data to predict closing price
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Open Price :
+          </label>
           <input
             name="openPrice"
             value={formData.openPrice}
             onChange={handleChange}
             type="number"
-            className="border rounded p-2 focus:border-sky-500 focus:outline focus:outline-sky-500 disabled:border-gray-200"
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter Open Price"
           />
 
-          <label className="font-semibold">High Price :</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            High Price :
+          </label>
           <input
             name="highPrice"
             value={formData.highPrice}
             onChange={handleChange}
             type="number"
-            className="border rounded p-2 focus:border-sky-500 focus:outline focus:outline-sky-500 disabled:border-gray-200"
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter High Price"
           />
 
-          <label className="font-semibold">Low Price :</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Low Price :
+          </label>
           <input
             name="lowPrice"
             value={formData.lowPrice}
             onChange={handleChange}
             type="number"
-            className="border rounded p-2 focus:border-sky-500 focus:outline focus:outline-sky-500 disabled:border-gray-200"
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter Low Price"
           />
 
-          <label className="font-semibold">Volume Price :</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Volume :
+          </label>
           <input
             name="volumePrice"
             value={formData.volumePrice}
             onChange={handleChange}
             type="number"
-            className="border rounded p-2 focus:border-sky-500 focus:outline focus:outline-sky-500 disabled:border-gray-200"
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter Volume"
           />
 
           <button
-            onClick={handleSubmit}
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded-lg font-semibold hover:bg-blue-600 mt-2 cursor-pointer"
+            disabled={isSubmitting}
+            className="w-full flex justify-center items-center py-3 px-4 rounded-md shadow-md text-white font-semibold transition duration-200 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Predict closing price
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white mr-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Predicting...
+              </>
+            ) : (
+              "Predict Closing Price"
+            )}
           </button>
-
-          <h2 className="mt-4 text-lg font-bold text-center">
-            Predicted Closing Price : {predictedPrice}
-          </h2>
         </form>
+
+        {error && (
+          <div className="text-red-600 text-sm text-center mt-4 p-3 bg-red-50 rounded-md">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {predictedPrice !== null && (
+          <div className="mt-6 p-4 bg-blue-100 rounded-lg text-center animate-fade-in shadow-md">
+            <p className="text-sm font-medium text-gray-600 mb-1">
+              Predicted Closing Price
+            </p>
+            <p className="text-3xl font-bold text-blue-700">
+              ${Number(predictedPrice).toFixed(2)}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
