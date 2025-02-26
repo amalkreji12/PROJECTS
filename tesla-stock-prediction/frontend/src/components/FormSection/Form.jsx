@@ -59,7 +59,7 @@ const Form = () => {
             onChange={handleChange}
             type="number"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter Open Price"
           />
 
@@ -72,7 +72,7 @@ const Form = () => {
             onChange={handleChange}
             type="number"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter High Price"
           />
 
@@ -85,7 +85,7 @@ const Form = () => {
             onChange={handleChange}
             type="number"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter Low Price"
           />
 
@@ -98,7 +98,7 @@ const Form = () => {
             onChange={handleChange}
             type="number"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter Volume"
           />
 

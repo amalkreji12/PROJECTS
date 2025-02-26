@@ -1,4 +1,5 @@
 import "./App.css";
+import Footer from "./components/Footer/Footer";
 import Form from "./components/FormSection/Form";
 import TopBar from "./components/TopBar/TopBar";
 
@@ -7,6 +8,7 @@ function App() {
     <div>
       <TopBar />
       <Form />
+      <Footer/>
     </div>
   );
 }
