@@ -130,7 +130,7 @@ npm run dev
 
 ## 📫 Contact
 
-For any questions or suggestions, feel free to reach out via [GitHub Issues](https://github.com/your-username/tesla-stock-prediction/issues).
+For any questions or suggestions, feel free to reach out via [GitHub](https://github.com/amalkreji12).
 
 ---
 
